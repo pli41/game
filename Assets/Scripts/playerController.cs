@@ -2,12 +2,13 @@
 using System.Collections;
 
 public class playerController : MonoBehaviour {
-	enum state{idle, move, attack, die};
+
+	public enum state{idle, move, attack, die};
 	public int maxHealth = 100;
 	public float speed;	
 	public float rotationSpeed;
 	public CharacterController controller;
-	public int hp;
+	public float hp;
 	private Vector3 facePosition;
 	private Vector3 mousePosition;
 	private Quaternion rotation;
@@ -16,7 +17,8 @@ public class playerController : MonoBehaviour {
 	private bool back;
 	private bool left;
 	private bool right;
-	private state playerState;
+	private bool idleS;
+	public state playerState;
 
 	private float healthBarlenght;
 
@@ -30,6 +32,7 @@ public class playerController : MonoBehaviour {
 	void Start () {
 		facePosition = transform.position;
 		healthBarlenght = Screen.width / 2;
+		idleS = true;
 	}
 
 	void OnGUI(){
@@ -39,32 +42,42 @@ public class playerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 
-		if(hp < 0){
+		if(hp <= 0){
 			playerState = state.die;
+			idleS = false;
 		}
 
 		if(playerState == state.die){
-			Die ();
+			animation.CrossFade (die.name);
+			Invoke("Die", 2.0f);
 		}
 		else{
 			if(Input.GetKey(KeyCode.W)){
 				forward = true;
 				playerState = state.move;
+				idleS = false;
 			}
 			if(Input.GetKey(KeyCode.A)){
 				left = true;
 				playerState = state.move;
+				idleS = false;
 			}
 			if(Input.GetKey(KeyCode.S)){
 				back = true;
 				playerState = state.move;
+				idleS = false;
 			}
 			if(Input.GetKey(KeyCode.D)){
 				right = true;
 				playerState = state.move;
+				idleS = false;
 			}
 			if(Input.GetMouseButton(0)){
 				playerState = state.attack;
+				idleS = false;
+			}
+			if (idleS){
+				playerState = state.idle;
 			}
 
 			getFacingDirection();
@@ -73,28 +86,32 @@ public class playerController : MonoBehaviour {
 			if(playerState == state.attack){
 				Attack();
 			}
-			else if(direction == new Vector3(0, 0, 0)){
-				animation.CrossFade(idle.name);
-				playerState = state.idle;
+			else if(playerState == state.move){
+				Move ();
 			}
-			else{
-				if(playerState == state.move){
-					Move ();
-				}
+			else if (playerState == state.idle){
+				Idle();
 			}
 
+			//Reset
 			forward = false;
 			back = false;
 			left = false;
 			right = false;
 			direction = new Vector3(0, 0, 0);
-			playerState = state.idle;
+			idleS = true;
 			//Debug.Log (transform.position);
 		}
 	}
-	
+
+	void Idle(){
+		animation.CrossFade (idle.name);
+
+	}
+
 	void Die(){
 		Debug.Log("You are dead");
+		Destroy (gameObject);
 	}
 
 
@@ -113,9 +130,9 @@ public class playerController : MonoBehaviour {
 		Debug.Log("attack");
 	}
 
-	void playerOnHit(int damage){
+	void playerOnHit(float damage){
 		hp -= damage;
-		Debug.Log (hp);
+		Debug.Log ("Player health =" + hp);
 	}
 
 	void getFacingDirection(){
@@ -160,7 +177,6 @@ public class playerController : MonoBehaviour {
 		//should directly set direction by 
 		Vector3 mouseDir = mousePosition - transform.position;
 		float angle = Vector3.Angle(transform.forward, mouseDir);
-		Debug.Log (angle);
 		if (angle > 7.0f) {
 			transform.Rotate (new Vector3 (0f, angle, 0f));
 		}

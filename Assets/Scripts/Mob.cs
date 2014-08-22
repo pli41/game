@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class Mob : MonoBehaviour {
-
+	public enum state{idle, move, attack, die};
+	public state mobState = state.idle;
 	public float speed;
 	public float attackRange;
 	public float alarmRange;
@@ -19,9 +20,10 @@ public class Mob : MonoBehaviour {
 	public Transform playerTransform;
 	public CharacterController controller;
 
-	public AnimationClip Run;
-	public AnimationClip Idle;
-	public AnimationClip Attack;
+	public AnimationClip run;
+	public AnimationClip idle;
+	public AnimationClip attack;
+	public AnimationClip die;
 
 	// Use this for initialization
 	void Start () {
@@ -34,47 +36,77 @@ public class Mob : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(!mouseOver){
-			OnMouseNotOver();
+		if(hp <= 0){
+			mobState = state.die;
 		}
 		else{
-			mouseOver = false;
+			if(!mouseOver){
+				OnMouseNotOver();
+			}
+			else{
+				mouseOver = false;
+			}
+
+			if (InAttackRange()){
+				mobState = state.attack;
+			}
+			else if (InAlarmRange ()){
+				mobState = state.move;
+			}
+			else{
+				mobState = state.idle;
+			}
 		}
 
-		RaycastHit hit;
-		Ray ray = new Ray(transform.position, transform.forward);
-
-		if (inAttackRange()){
-			Debug.Log("In attack range");
-			attack ();
+		if(mobState == state.die){
+			animation.CrossFade (die.name);
+			Invoke("Die", 2.0f);
 		}
-		else if (inAlarmRange ()){
-			chase ();
+		else if (mobState == state.attack){
+			Attack();
+		}
+		else if (mobState == state.move){
+			Run();
 		}
 		else{
-			animation.CrossFade(Idle.name);
+			Idle();
 		}
+	
+
+
 	}
 
-	public bool inAttackRange(){
+	void MobOnHit(float damage){
+		hp -= damage;
+		Debug.Log ("Mob health =" + hp);
+	}
+
+
+	public bool InAttackRange(){
 		return Vector3.Distance (transform.position, playerTransform.position) < attackRange;
 	}
 
-	bool inAlarmRange(){
+	bool InAlarmRange(){
 		return Vector3.Distance (transform.position, playerTransform.position) < alarmRange;
 	}
 
-	void attack(){
-		animation.CrossFade(Attack.name);
-		Debug.Log("Enemy attacking");
+	void Die(){
+		Debug.Log("Mob dies");
+		Destroy (gameObject);
 	}
 
+	void Attack(){
+		animation.CrossFade(attack.name);
+	}
 
-	void chase(){
-		Debug.Log("Enemy chasing");
+	void Idle(){
+		animation.CrossFade (idle.name);
+	}
+
+	void Run(){
 		transform.LookAt (playerTransform.position);
 		controller.SimpleMove (transform.forward * speed);
-		animation.CrossFade(Run.name);
+		animation.CrossFade(run.name);
 	}
 
 	void OnMouseOver(){
