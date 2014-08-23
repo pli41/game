@@ -3,8 +3,8 @@ using System.Collections;
 
 public class playerController : MonoBehaviour {
 
-	public enum state{idle, move, attack, die};
-	public int maxHealth = 100;
+	public enum state{onHit, idle, move, attack, die};
+	public float maxHealth = 100;
 	public float speed;	
 	public float rotationSpeed;
 	public CharacterController controller;
@@ -19,25 +19,28 @@ public class playerController : MonoBehaviour {
 	private bool right;
 	private bool idleS;
 	public state playerState;
+	private float onHitTimer;
+	private float onHitTime = 1;
 
-	private float healthBarlenght;
-
-
+	public AnimationClip getHit;
 	public AnimationClip die;
 	public AnimationClip run;
 	public AnimationClip idle;
 	public AnimationClip attack;
 
+	public float combatEscapeTime = 7;
+
+	public float countDown;
+
 	// Use this for initialization
 	void Start () {
+		onHitTimer = onHitTime;
 		facePosition = transform.position;
-		healthBarlenght = Screen.width / 2;
 		idleS = true;
 	}
 
-	void OnGUI(){
+	
 
-	}
 
 	// Update is called once per frame
 	void Update (){
@@ -80,18 +83,24 @@ public class playerController : MonoBehaviour {
 				playerState = state.idle;
 			}
 
-			getFacingDirection();
+			AdjustFacingDirection();
 
 
 			if(playerState == state.attack){
 				Attack();
 			}
+			else if(playerState == state.onHit){
+				animation.CrossFade(getHit.name);
+			}
 			else if(playerState == state.move){
 				Move ();
 			}
+
 			else if (playerState == state.idle){
 				Idle();
 			}
+
+
 
 			//Reset
 			forward = false;
@@ -99,7 +108,14 @@ public class playerController : MonoBehaviour {
 			left = false;
 			right = false;
 			direction = new Vector3(0, 0, 0);
-			idleS = true;
+			if(onHitTimer > 0 && playerState == state.onHit){
+				onHitTimer -= Time.deltaTime;
+			}
+			else{
+				idleS = true;
+				onHitTimer = onHitTime;
+			}
+
 			//Debug.Log (transform.position);
 		}
 	}
@@ -125,17 +141,29 @@ public class playerController : MonoBehaviour {
 	void Attack(){
 		locateMousePosition();
 		rotateToMousePosition();
-		playerState = state.attack;
 		animation.CrossFade (attack.name);
+		countDown = combatEscapeTime;
+		InvokeRepeating ("combatEscapeCountDown", 0, 1);
 		Debug.Log("attack");
 	}
 
 	void playerOnHit(float damage){
+		playerState = state.onHit;
 		hp -= damage;
+		countDown = combatEscapeTime;
+		InvokeRepeating ("combatEscapeCountDown", 0, 1);
 		Debug.Log ("Player health =" + hp);
 	}
 
-	void getFacingDirection(){
+	void combatEscapeCountDown(){
+		countDown -= 1;
+		if(countDown == 0){
+			CancelInvoke("combatEscapeCountDown");
+			Debug.Log("Escaped fighting");
+		}
+	}
+
+	void AdjustFacingDirection(){
 		//direction = new Vector3(0, 0, 0);
 		if(forward){
 			direction += Vector3.forward;
@@ -159,6 +187,7 @@ public class playerController : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		if (Physics.Raycast (ray, out hit, 1000)) {
 			mousePosition = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+			Debug.Log(mousePosition);
 		}
 		else{
 			Debug.Log("Mouse position is not available");
@@ -175,11 +204,13 @@ public class playerController : MonoBehaviour {
 
 	void rotateToMousePosition(){
 		//should directly set direction by 
-		Vector3 mouseDir = mousePosition - transform.position;
-		float angle = Vector3.Angle(transform.forward, mouseDir);
-		if (angle > 7.0f) {
-			transform.Rotate (new Vector3 (0f, angle, 0f));
-		}
+//		Vector3 mouseDir = mousePosition - transform.position;
+//		float angle = Vector3.Angle(transform.forward, mouseDir);
+//		if (angle > 7.0f) {
+//			transform.Rotate (new Vector3 (0f, angle, 0f));
+//		}
+		transform.LookAt(mousePosition);
+		Debug.Log("look at");
 	}
 	
 }

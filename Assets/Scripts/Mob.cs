@@ -7,8 +7,9 @@ public class Mob : MonoBehaviour {
 	public float speed;
 	public float attackRange;
 	public float alarmRange;
+	public float maxHealth;
 	public float hp;
-	public GameObject opponent;
+	public float damage;
 
 
 	private Color startcolor;
@@ -29,8 +30,8 @@ public class Mob : MonoBehaviour {
 	void Start () {
 		startcolor = body.color;
 		mouseOver = false;
-		hp = 100f;
-		opponent = GameObject.FindGameObjectWithTag("Player");
+		hp = maxHealth;
+
 	}
 	
 	// Update is called once per frame
