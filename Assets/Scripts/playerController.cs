@@ -149,7 +149,9 @@ public class playerController : MonoBehaviour {
 
 	void playerOnHit(float damage){
 		playerState = state.onHit;
+		idleS = false;
 		hp -= damage;
+		animation.CrossFade (getHit.name);
 		countDown = combatEscapeTime;
 		InvokeRepeating ("combatEscapeCountDown", 0, 1);
 		Debug.Log ("Player health =" + hp);
