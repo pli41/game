@@ -149,7 +149,9 @@ public class playerController : MonoBehaviour {
 
 	void playerOnHit(float damage){
 		playerState = state.onHit;
+		idleS = false;
 		hp -= damage;
+		animation.CrossFade (getHit.name);
 		countDown = combatEscapeTime;
 		InvokeRepeating ("combatEscapeCountDown", 0, 1);
 		Debug.Log ("Player health =" + hp);
@@ -209,8 +211,11 @@ public class playerController : MonoBehaviour {
 //		if (angle > 7.0f) {
 //			transform.Rotate (new Vector3 (0f, angle, 0f));
 //		}
-		transform.LookAt(mousePosition);
-		Debug.Log("look at");
+		var lookPos = mousePosition - transform.position;
+		lookPos.y = 0;
+		var rotation = Quaternion.LookRotation(lookPos);
+		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 100);//optional: *damping after deltaTime(which indicates speed)
+		Debug.Log("look at "+mousePosition.ToString());
 	}
 	
 }

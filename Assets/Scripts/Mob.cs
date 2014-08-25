@@ -29,7 +29,7 @@ public class Mob : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		body.color = Color.white;
-		head.color = Color.white;
+		body.color = Color.white;
 		startcolor = body.color;
 		mouseOver = false;
 		hp = maxHealth;
@@ -119,7 +119,6 @@ public class Mob : MonoBehaviour {
 	}
 
 	void OnMouseNotOver(){
-		mouseOver = false;
 		body.color = startcolor;
 		head.color = startcolor;
 	}

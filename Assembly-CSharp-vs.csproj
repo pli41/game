@@ -46,14 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\EnemyHealthGUI.cs" />
      <Compile Include="Assets\Imports\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" />
      <Compile Include="Assets\Imports\Standard Assets\Scripts\General Scripts\ActivateTrigger.cs" />
+     <Compile Include="Assets\Scripts\EnemyHealthGUI.cs" />
      <Compile Include="Assets\Scripts\EnemyWeapon.cs" />
      <Compile Include="Assets\Scripts\Mob.cs" />
      <Compile Include="Assets\Scripts\PlayerWeapon.cs" />
      <Compile Include="Assets\Scripts\playerController.cs" />
-     <Compile Include="Assets\highLight.cs" />
      <None Include="Assets\Imports\SkeletonData\animations.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

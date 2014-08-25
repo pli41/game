@@ -1,17 +1,22 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/playerController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Mob.cs" Line="26" Column="30" />
-      <File FileName="Assets/Scripts/playerController.cs" Line="145" Column="21" />
+      <File FileName="Assets/Scripts/Mob.cs" Line="17" Column="23" />
+      <File FileName="Assets/Scripts/playerController.cs" Line="183" Column="33" />
       <File FileName="Assets/highLight.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/PlayerWeapon.cs" Line="12" Column="36" />
-      <File FileName="Assets/Scripts/EnemyWeapon.cs" Line="6" Column="19" />
-      <File FileName="Assets/EnemyHealthGUI.cs" Line="29" Column="1" />
+      <File FileName="Assets/Scripts/PlayerWeapon.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/EnemyWeapon.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State expanded="True" selected="True" />
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Scripts" expanded="True">
+              <Node name="playerController.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
