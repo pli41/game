@@ -147,6 +147,16 @@ public class playerController : MonoBehaviour {
 		Debug.Log("attack");
 	}
 
+	void playerOnHeal(float heal){
+		if((hp+heal) > 100){
+			hp = 100;
+		}
+		else{
+			hp += heal;
+		}
+		Debug.Log ("Player health = " + hp);
+	}
+
 	void playerOnHit(float damage){
 		playerState = state.onHit;
 		idleS = false;
@@ -154,7 +164,7 @@ public class playerController : MonoBehaviour {
 		animation.CrossFade (getHit.name);
 		countDown = combatEscapeTime;
 		InvokeRepeating ("combatEscapeCountDown", 0, 1);
-		Debug.Log ("Player health =" + hp);
+		Debug.Log ("Player health = " + hp);
 	}
 
 	void combatEscapeCountDown(){
