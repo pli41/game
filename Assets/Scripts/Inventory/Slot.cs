@@ -4,7 +4,6 @@ using System.Collections;
 
 [System.Serializable]
 public class Slot{
-
 	public Item item;
 	public bool occupied;
 	public Rect itemPosition;

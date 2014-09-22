@@ -44,13 +44,12 @@ public class Inventory: MonoBehaviour {
 			drawInventory ();
 			drawSlots();
 		}
-
 	}
 
-	void addItem(GameObject item){
-
-		if(item != null){
-			findEmptySlot ().addItem (item);
+	void addItem(Item item){
+		Slot EmptySlot = findEmptySlot ();
+		if(EmptySlot != null){
+			findEmptySlot().addItem (item);
 		}
 		else{
 			Debug.Log("Your bag is full");
