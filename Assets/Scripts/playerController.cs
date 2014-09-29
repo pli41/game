@@ -144,7 +144,6 @@ public class playerController : MonoBehaviour {
 		animation.CrossFade (attack.name);
 		countDown = combatEscapeTime;
 		InvokeRepeating ("combatEscapeCountDown", 0, 1);
-		Debug.Log("attack");
 	}
 
 	void playerOnHeal(float heal){
@@ -199,7 +198,7 @@ public class playerController : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		if (Physics.Raycast (ray, out hit, 1000)) {
 			mousePosition = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-			Debug.Log(mousePosition);
+			//Debug.Log(mousePosition);
 		}
 		else{
 			Debug.Log("Mouse position is not available");
@@ -225,7 +224,7 @@ public class playerController : MonoBehaviour {
 		lookPos.y = 0;
 		var rotation = Quaternion.LookRotation(lookPos);
 		transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 100);//optional: *damping after deltaTime(which indicates speed)
-		Debug.Log("look at "+mousePosition.ToString());
+		//Debug.Log("look at "+mousePosition.ToString());
 	}
 	
 }

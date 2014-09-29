@@ -13,6 +13,7 @@ public class Apple : Item{
  	public override void performAction(){
 		GameObject gameObject = GameObject.FindGameObjectWithTag("Player");
 		gameObject.SendMessage("playerOnHeal", value);
+		Debug.Log("item performs action");
 	}
 }
 

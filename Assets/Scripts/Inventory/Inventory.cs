@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class Inventory: MonoBehaviour {
-	//321*434
+	//321*434 is the size of the inventory GUI
 	public Texture2D image;
 	public bool showInventory;
 	public Rect position;
@@ -11,10 +11,10 @@ public class Inventory: MonoBehaviour {
 	private int slotWidthNum = 10;
 	private int slotHeightNum = 4;
 	public Slot[,] slots;
-	public int slotX;
-	public int slotY;
-	public int slotWidth = 26;
-	public int slotHeight = 26;
+	public int slotWidth = 29;
+	public int slotHeight = 29;
+	public Texture2D slotFrame;
+	public Texture2D slotFrame2;
 	
 
 	// Use this for initialization
@@ -27,7 +27,7 @@ public class Inventory: MonoBehaviour {
 		slots = new Slot[slotWidthNum, slotHeightNum];
 		for(int x = 0; x < slotWidthNum; x++){
 			for(int y = 0; y < slotHeightNum; y++){
-				slots[x,y] = new Slot(new Rect(slotX + slotWidth * x, slotY + slotHeight * y, slotWidth, slotHeight));
+				slots[x,y] = new Slot(new Rect(slotWidth * x, slotHeight * y, slotWidth, slotHeight), slotFrame, slotFrame2);
 			}
 		}
 	}
@@ -37,12 +37,21 @@ public class Inventory: MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.B)) {
 			showInventory = !showInventory;
 		}
+
+		if(showInventory){
+			updateSlotsState(true);
+		}
+		else{
+			updateSlotsState(false);
+		}
+
 	}
 
 	void OnGUI(){
 		if(showInventory){
 			drawInventory ();
 			drawSlots();
+			checkMouseForSlots();
 		}
 	}
 
@@ -77,12 +86,28 @@ public class Inventory: MonoBehaviour {
 	void drawSlots(){
 		for(int x = 0; x < slotWidthNum; x++){
 			for(int y = 0; y < slotHeightNum; y++){
-				if(slots[x,y].occupied){
-					slots[x,y].drawSlot(position.x + 16, position.y + 255);
-				}
-
+				slots[x,y].drawSlot(position.x + 16, position.y + 255);
 			}
 		}
 	}
+
+	void checkMouseForSlots(){
+		for(int x = 0; x < slotWidthNum; x++){
+			for(int y = 0; y < slotHeightNum; y++){
+				slots[x,y].checkMouse();
+			}
+		}
+	}
+
+
+	void updateSlotsState(bool state){
+		for(int x = 0; x < slotWidthNum; x++){
+			for(int y = 0; y < slotHeightNum; y++){
+				slots[x,y].showInventory = state;
+			}
+		}
+	}
+
+
 
 }
