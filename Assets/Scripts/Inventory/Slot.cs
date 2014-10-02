@@ -52,8 +52,10 @@ public class Slot{
 	}
 
 	public void useItem(){
-		
-
+		item.performAction();
+		item = null;
+		occupied = false;
+		Debug.Log ("Item used");
 	}
 
 	public void checkMouse(){
@@ -68,10 +70,7 @@ public class Slot{
 
 
 		if(Input.GetMouseButtonDown(0) && mouseOver && occupied){
-			item.performAction();
-			item = null;
-			occupied = false;
-			Debug.Log("Item used");
+			useItem();
 		}
 	}
 

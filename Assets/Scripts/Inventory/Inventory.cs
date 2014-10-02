@@ -55,6 +55,7 @@ public class Inventory: MonoBehaviour {
 		}
 	}
 
+
 	void addItem(Item item){
 		Slot EmptySlot = findEmptySlot ();
 		if(EmptySlot != null){
@@ -66,11 +67,12 @@ public class Inventory: MonoBehaviour {
 	}
 
 	Slot findEmptySlot(){
-		for(int x = 0; x < slotWidthNum; x++){
-			for(int y = 0; y < slotHeightNum; y++){
+		// x is horizontal 
+		for(int y = 0; y < slotHeightNum; y++){
+			for(int x = 0; x < slotWidthNum; x++){
 				if (!slots[x,y].occupied){
-					return slots[x,y];
 					Debug.Log("Empty slot found");
+					return slots[x,y];
 				}
 			}
 		}
@@ -98,6 +100,7 @@ public class Inventory: MonoBehaviour {
 			}
 		}
 	}
+
 
 
 	void updateSlotsState(bool state){

@@ -7,7 +7,6 @@ public class playerController : MonoBehaviour {
 	public float maxHealth = 100;
 	public float speed;	
 	public float rotationSpeed;
-	public CharacterController controller;
 	public float hp;
 	private Vector3 facePosition;
 	private Vector3 mousePosition;
